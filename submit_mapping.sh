@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #BATCH --job-name=fv3_mapping
-#SBATCH -t 02:00:00
+#SBATCH -t 00:20:00
 #SBATCH -A bigmem
-#SBATCH -A gsienkf
+#SBATCH -A da-cpu
 #SBATCH --qos=batch
 #SBATCH -o mapping.out
 #SBATCH -e mapping.out

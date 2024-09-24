@@ -8,6 +8,7 @@ program create_fv3_mapping
   character*100      :: tile_path 
   character*100      :: orog_path 
   character*20       :: otype ! orography filename stub. For atm only, oro_C${RES}, for atm/ocean oro_C${RES}.mx100
+  character*20       :: out_type 
   character*10       :: obs_source
   character*100      :: coord_path
 
@@ -50,7 +51,7 @@ program create_fv3_mapping
   character*20 :: dimstr
   real, parameter :: deg2rad = 3.1415926535897931/180.0
 
-  namelist/fv3_mapping_nml/ tile_dim, tile_path, orog_path, otype, obs_source, coord_path
+  namelist/fv3_mapping_nml/ tile_dim, tile_path, orog_path, otype, out_type, obs_source, coord_path
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Setup inputs and read namelist
@@ -71,12 +72,12 @@ program create_fv3_mapping
  read (nml=fv3_mapping_nml, iostat=status, unit=io)
  close (io)
  
- if (trim(obs_source)=="IMS4km") then 
+ if (trim(obs_source)=="IMS_4km") then 
         source_i_size=6144
         source_j_size=6144 
         ims_lon_name= "imslon_4km_8bytes.bin"
         ims_lat_name= "imslat_4km_8bytes.bin"
- elseif (trim(obs_source) == "IMS24km" ) then 
+ elseif (trim(obs_source) == "IMS_24km" ) then 
         source_i_size=1024
         source_j_size=1024
         ims_lon_name= "imslon_24km_8bytes.bin"
@@ -379,7 +380,7 @@ program create_fv3_mapping
 ! create the output filename and netcdf file (overwrite old)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  
-  filename=trim(obs_source)//"_to_FV3_mapping."//trim(otype)//".nc"
+  filename=trim(obs_source)//"_to_"//trim(out_type)//".nc"
   write(6,*) 'writing indexes to ', trim(filename)
 
   status = nf90_create(filename, NF90_CLOBBER, ncid)
